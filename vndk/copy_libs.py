@@ -15,6 +15,7 @@ for vndk_version, libs in {
     "v32": [
         "libbinder",
         "libhidlbase",
+        "libui",
         "libutils",
     ],
     "v33": [
@@ -58,6 +59,17 @@ for vndk_version, libs in {
                                 PATCHELF_PATH,
                                 "--add-needed",
                                 "libprocessgroup_shim.so",
+                                lib_dest,
+                            ]
+                        )
+
+                    if vndk_version == "v32" and lib == "libui":
+                        subprocess.run(
+                            [
+                                PATCHELF_PATH,
+                                "--replace-needed",
+                                "android.hardware.graphics.common-V2-ndk_platform.so",
+                                "android.hardware.graphics.common-V7-ndk.so",
                                 lib_dest,
                             ]
                         )
